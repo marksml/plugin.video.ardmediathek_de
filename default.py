@@ -149,13 +149,13 @@ def listShowsAZ(letter):
     spl = content.split('<div class="teaser" data-ctrl')
     for i in range(1, len(spl), 1):
         entry = spl[i]
-        match = re.compile('documentId=(.+?)&', re.DOTALL).findall(entry)
-        showID = match[0]
         match = re.compile('class="headline">(.+?)<', re.DOTALL).findall(entry)
         title = match[0]
         match = re.compile('/image/(.+?)/16x9/', re.DOTALL).findall(entry)
         thumb = baseUrl+"/image/"+match[0]+"/16x9/448"
-        addShowDir(cleanTitle(title), baseUrl+"/tv/Sendung?documentId="+showID, 'listVideos', thumb)
+        match = re.compile('<a href="(.+?)"', re.DOTALL).findall(entry)
+        link = match[0]
+        addShowDir(cleanTitle(title), baseUrl+link, 'listVideos', thumb)
     xbmcplugin.endOfDirectory(pluginhandle)
     if forceViewMode:
         xbmc.executebuiltin('Container.SetViewMode('+viewModeShows+')')
